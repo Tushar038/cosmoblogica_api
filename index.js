@@ -8,9 +8,11 @@ const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
 const path = require("path");
+const cors = require("cors");
 
 dotenv.config();
 app.use(express.json());
+app.use(cors());
 app.use("/images", express.static(path.join(__dirname, "/images")));
 
 mongoose
@@ -41,7 +43,10 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
-
+app.use("/", (req,res) => {
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.send("API is Running...");
+});
 
 
 app.listen(process.env.PORT || 5000, () => {
